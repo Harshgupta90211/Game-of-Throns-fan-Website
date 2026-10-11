@@ -1,0 +1,436 @@
+ 
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of Thrones Quotes — The Words of Westeros</title>
+  <meta name="description" content="Explore legendary quotes from Game of Thrones. One-click instant random quotes, character wisdom archives, and Great Houses directory powered by the official API.">
+  <meta name="keywords" content="Game of Thrones, GOT Quotes, Tyrion Lannister, Daenerys Targaryen, Jon Snow, House Stark, Westeros, Valyrian Quotes">
+  <meta property="og:title" content="Game of Thrones Quotes — The Words of Westeros">
+  <meta property="og:description" content="Summon timeless wisdom from the Iron Throne, Great Houses, and iconic characters of Westeros.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Cinzel, Cinzel Decorative, Cormorant Garamond, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="obsidian">
+
+  <!-- Ambient Particle Canvas & Atmosphere -->
+  <canvas id="ambient-canvas"></canvas>
+  <div class="westeros-bg-overlay"></div>
+
+  <div class="app-wrapper">
+    <!-- SITE NAVIGATION HEADER -->
+    <header class="site-header">
+      <div class="container nav-inner">
+        <a href="#random" class="brand-logo">
+          <svg class="brand-icon" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 8 L62 35 L92 38 L68 58 L76 88 L50 72 L24 88 L32 58 L8 38 L38 35 Z" opacity="0.15"/>
+            <polygon points="50,12 60,35 85,38 65,55 72,80 50,67 28,80 35,55 15,38 40,35" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="12" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M50 30 L50 70 M30 50 L70 50" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <div class="brand-title">
+            <span>Westeros</span>
+            <span class="brand-subtitle">Chronicles of Wisdom</span>
+          </div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#random" class="nav-link active"><span>👑</span> Random Quote</a></li>
+            <li><a href="#characters" class="nav-link"><span>📜</span> Characters</a></li>
+            <li><a href="#houses" class="nav-link"><span>🛡️</span> Great Houses</a></li>
+            <li><a href="#trivia" class="nav-link"><span>⚔️</span> Citadel Trial</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button id="theme-toggle-btn" class="btn-icon" onclick="window.gotApp.toggleTheme()" title="Switch Realm Theme">
+            🎨
+          </button>
+          <button id="sound-toggle-btn" class="btn-icon" onclick="window.gotApp.toggleSound()" title="Toggle Sound FX">
+            🔊
+          </button>
+          <button id="saved-modal-btn" class="btn-icon" onclick="window.gotApp.openSavedModal()" title="View Tome of Saved Wisdom">
+            ❤️
+            <span id="fav-count-badge" class="badge-count" style="display: none;">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- HERO / ONE-CLICK RANDOM QUOTE SECTION -->
+      <section id="random" class="hero-section">
+        <div class="container">
+          <div class="hero-badge-wrap">
+            <span>⚔️</span>
+            <span>The Iron Throne of Quotes</span>
+          </div>
+
+          <h1 class="hero-title">
+            Words of <span class="title-accent">Power & Destiny</span>
+          </h1>
+          <p class="hero-desc">
+            One click to summon the raw truth, cunning schemes, and legendary words spoken across the Seven Kingdoms.
+          </p>
+
+          <!-- RANDOM QUOTE STAGE CARD -->
+          <div class="random-stage">
+            <div id="random-quote-card" class="quote-card-main">
+              <!-- Corner Metal Filigree Accents -->
+              <div class="card-corner corner-tl"></div>
+              <div class="card-corner corner-tr"></div>
+              <div class="card-corner corner-bl"></div>
+              <div class="card-corner corner-br"></div>
+
+              <div class="quote-icon-bg">”</div>
+
+              <div class="quote-content-wrap">
+                <blockquote id="stage-quote-text" class="quote-text">
+                  Summoning the wisdom of Westeros...
+                </blockquote>
+
+                <div class="quote-attribution">
+                  <div class="author-profile">
+                    <div id="stage-author-avatar" class="author-avatar-box">
+                      <div class="char-avatar-frame avatar-lg">
+                        <img src="https://thronesapi.com/assets/images/tyrion-lannister.jpg" alt="Tyrion Lannister" class="char-avatar-img" />
+                      </div>
+                    </div>
+                    <div class="author-info">
+                      <div id="stage-author-name" class="author-name">Tyrion Lannister</div>
+                      <div id="stage-author-house" class="author-house-tag">
+                        House Lannister of Casterly Rock
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="quote-actions-bar">
+                    <button class="btn-action" onclick="window.gotApp.speak(document.getElementById('stage-quote-text').innerText, document.getElementById('stage-author-name').innerText)" title="Narrate Quote">
+                      🔊 Voice
+                    </button>
+                    <button class="btn-action" onclick="window.gotApp.copyQuote(document.getElementById('stage-quote-text').innerText, document.getElementById('stage-author-name').innerText)" title="Copy to Clipboard">
+                      📋 Copy
+                    </button>
+                    <button class="btn-action" onclick="window.gotApp.openPosterModalStage()" title="Generate Social Poster Card">
+                      🎴 Poster
+                    </button>
+                    <button id="stage-fav-btn" class="btn-action" onclick="window.gotApp.toggleSaveStage()" title="Save to Tome of Wisdom">
+                      🤍 Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stage Controls -->
+            <div class="random-controls-bar">
+              <button id="summon-quote-btn" class="btn-westeros btn-primary summon-btn-large" onclick="window.gotApp.summonRandom()">
+                <span>⚡</span>
+                <span>Summon Random Quote</span>
+              </button>
+
+              <div class="count-selector-pill" title="Number of quotes to summon">
+                <span style="font-size: 0.75rem; color: var(--text-muted); padding: 0 0.5rem; text-transform: uppercase; font-family: var(--font-serif);">Quantity:</span>
+                <button class="count-btn active" data-count="1" onclick="window.gotApp.setRandomCount(1)">1</button>
+                <button class="count-btn" data-count="3" onclick="window.gotApp.setRandomCount(3)">3</button>
+                <button class="count-btn" data-count="5" onclick="window.gotApp.setRandomCount(5)">5</button>
+              </div>
+
+              <div class="keyboard-hint">
+                <span>Press</span>
+                <kbd class="kbd-key">Space</kbd>
+                <span>or</span>
+                <kbd class="kbd-key">R</kbd>
+                <span>to summon</span>
+              </div>
+            </div>
+
+            <!-- Multi-Quotes Container (When Quantity > 1) -->
+            <div id="stage-multi-quotes-container" class="multi-quotes-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: CHARACTER QUOTES EXPLORER (/v1/author/:slug/:count) -->
+      <section id="characters" class="section-block" style="background: rgba(10, 14, 22, 0.5);">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow">The Citadel Archives</span>
+            <h2 class="section-title">Quotes by Character</h2>
+            <p class="section-subtitle">
+              Query specific insights from rulers, warriors, schemers, and free folk across Westeros.
+            </p>
+            <div class="westeros-divider">
+              <span class="divider-sigil">⚔️</span>
+            </div>
+          </div>
+
+          <div class="character-explorer">
+            <!-- Controls & Filter Bar -->
+            <div class="explorer-controls">
+              <div class="search-row">
+                <div class="search-input-wrap">
+                  <span class="search-icon">🔍</span>
+                  <select id="character-select-dropdown" class="input-westeros" onchange="window.gotApp.onCharacterSelectChange(event)">
+                    <!-- Populated dynamically via JS -->
+                  </select>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <label for="char-count-select" style="font-family: var(--font-serif); font-size: 0.85rem; color: var(--gold-400); text-transform: uppercase;">
+                    Quotes Count:
+                  </label>
+                  <select id="char-count-select" class="select-westeros" style="min-width: 90px;" onchange="window.gotApp.onCountSelectChange(event)">
+                    <option value="1">1 Quote</option>
+                    <option value="2" selected>2 Quotes</option>
+                    <option value="3">3 Quotes</option>
+                    <option value="5">5 Quotes</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Popular Character Shortcut Chips -->
+              <div class="character-chips-wrap">
+                <span class="chips-label">Popular Figures:</span>
+                <button class="char-chip active" data-slug="tyrion" onclick="window.gotApp.selectCharacter('tyrion')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/tyrion-lannister.jpg" alt="Tyrion" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">🦁</span>
+                  </div>
+                  <span>Tyrion Lannister</span>
+                </button>
+                <button class="char-chip" data-slug="jon" onclick="window.gotApp.selectCharacter('jon')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/jon-snow.jpg" alt="Jon" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">🐺</span>
+                  </div>
+                  <span>Jon Snow</span>
+                </button>
+                <button class="char-chip" data-slug="daenerys" onclick="window.gotApp.selectCharacter('daenerys')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/daenerys.jpg" alt="Daenerys" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">🐉</span>
+                  </div>
+                  <span>Daenerys Targaryen</span>
+                </button>
+                <button class="char-chip" data-slug="arya" onclick="window.gotApp.selectCharacter('arya')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/arya-stark.jpg" alt="Arya" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">🗡️</span>
+                  </div>
+                  <span>Arya Stark</span>
+                </button>
+                <button class="char-chip" data-slug="cersei" onclick="window.gotApp.selectCharacter('cersei')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/cersei.jpg" alt="Cersei" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">👑</span>
+                  </div>
+                  <span>Cersei Lannister</span>
+                </button>
+                <button class="char-chip" data-slug="olenna" onclick="window.gotApp.selectCharacter('olenna')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/olenna-tyrell.jpg" alt="Olenna" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">🌹</span>
+                  </div>
+                  <span>Olenna Tyrell</span>
+                </button>
+                <button class="char-chip" data-slug="ned" onclick="window.gotApp.selectCharacter('ned')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/ned-stark.jpg" alt="Ned" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">❄️</span>
+                  </div>
+                  <span>Ned Stark</span>
+                </button>
+                <button class="char-chip" data-slug="jaime" onclick="window.gotApp.selectCharacter('jaime')">
+                  <div class="char-avatar-frame avatar-xs">
+                    <img src="https://thronesapi.com/assets/images/jaime-lannister.jpg" alt="Jaime" class="char-avatar-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <span class="char-avatar-fallback" style="display: none;">⚔️</span>
+                  </div>
+                  <span>Jaime Lannister</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Character Profile Hero Banner -->
+            <div id="char-hero-banner" class="character-profile-banner">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Quotes Output Stream -->
+            <div id="char-quotes-stream" class="quotes-stream">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: GREAT HOUSES & MEMBERS DIRECTORY (/v1/houses) -->
+      <section id="houses" class="section-block">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow">Heraldry of Westeros</span>
+            <h2 class="section-title">The Great Houses & Their Members</h2>
+            <p class="section-subtitle">
+              Ancestral seats, heraldic crests, sacred house words, and list of all noble members. Click any member to explore their wisdom.
+            </p>
+            <div class="westeros-divider">
+              <span class="divider-sigil">🛡️</span>
+            </div>
+          </div>
+
+          <!-- Houses Search Bar -->
+          <div style="max-width: 500px; margin: 0 auto 2.5rem; position: relative;">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="input-westeros" placeholder="Filter houses by name, seat, motto, or member..." oninput="window.gotApp.filterHouses(event)">
+          </div>
+
+          <!-- Houses Grid -->
+          <div id="houses-grid-container" class="houses-grid">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: CITADEL TRIALS (WHO SAID IT? TRIVIA MINI-GAME) -->
+      <section id="trivia" class="section-block" style="background: rgba(10, 14, 22, 0.5);">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow">Interactive Knowledge Trial</span>
+            <h2 class="section-title">The Citadel Trial</h2>
+            <p class="section-subtitle">
+              Can you recognize which lord, lady, or warrior uttered these words in the annals of history?
+            </p>
+            <div class="westeros-divider">
+              <span class="divider-sigil">⚔️</span>
+            </div>
+          </div>
+
+          <div class="trivia-arena">
+            <div class="trivia-score-header">
+              <div class="score-badge">
+                <span>Honor Score:</span>
+                <span id="trivia-score-val" style="color: #fff; font-size: 1.25rem;">0</span>
+              </div>
+              <div class="score-badge">
+                <span>Streak:</span>
+                <span id="trivia-streak-val" style="color: var(--gold-400); font-size: 1.25rem;">🔥 0</span>
+              </div>
+            </div>
+
+            <div class="trivia-quote-box">
+              <p id="trivia-quote-display" class="trivia-quote-text">
+                “When you play the game of thrones, you win or you die. There is no middle ground.”
+              </p>
+            </div>
+
+            <div id="trivia-options-container" class="trivia-options-grid">
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <div style="text-align: center;">
+              <button id="trivia-next-btn" class="btn-westeros btn-primary" onclick="window.gotApp.nextTrivia()" style="display: none;">
+                <span>Next Challenge</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div class="brand-logo">
+          <div class="brand-title" style="text-align: center;">
+            <span>Game of Thrones Quotes</span>
+            <span class="brand-subtitle">The Complete Westeros Experience</span>
+          </div>
+        </div>
+
+        <p class="api-disclaimer">
+          Powered by the public <a href="https://gameofthronesquotes.xyz/" target="_blank" rel="noopener" style="color: var(--gold-400); text-decoration: none;">Game of Thrones Quotes API</a>. Built with modern web standards, procedural audio synthesis, and offline-resilient architecture.
+        </p>
+
+        <ul class="api-links-list">
+          <li class="api-link-item"><a href="https://api.gameofthronesquotes.xyz/v1/random" target="_blank" rel="noopener">GET /v1/random</a></li>
+          <li class="api-link-item"><a href="https://api.gameofthronesquotes.xyz/v1/author/tyrion/2" target="_blank" rel="noopener">GET /v1/author/tyrion/2</a></li>
+          <li class="api-link-item"><a href="https://api.gameofthronesquotes.xyz/v1/houses" target="_blank" rel="noopener">GET /v1/houses</a></li>
+        </ul>
+
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+          Valar Morghulis • All Men Must Die • Valar Dohaeris
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- SAVED QUOTES / TOME OF WISDOM MODAL -->
+  <div id="saved-quotes-modal" class="modal-backdrop" onclick="if(event.target === this) window.gotApp.closeSavedModal()">
+    <div class="modal-container">
+      <button class="modal-close-btn" onclick="window.gotApp.closeSavedModal()">✕</button>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--gold-400); display: flex; align-items: center; gap: 0.5rem;">
+          <span>📜</span> Tome of Saved Wisdom
+        </h3>
+        <button class="btn-westeros btn-secondary btn-sm" onclick="window.gotApp.exportSavedQuotes()">
+          <span>💾</span> Export JSON
+        </button>
+      </div>
+
+      <div id="saved-quotes-list" style="display: flex; flex-direction: column; gap: 1rem; max-height: 60vh; overflow-y: auto;">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE POSTER STUDIO MODAL -->
+  <div id="poster-modal" class="modal-backdrop" onclick="if(event.target === this) window.gotApp.closePosterModal()">
+    <div class="modal-container" style="max-width: 720px;">
+      <button class="modal-close-btn" onclick="window.gotApp.closePosterModal()">✕</button>
+      <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--gold-400); margin-bottom: 0.5rem; text-align: center;">
+        🎴 Westeros Poster Studio
+      </h3>
+      <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+        Generate high-resolution social cards and wallpapers from this quote.
+      </p>
+
+      <div class="poster-theme-selector">
+        <button class="theme-chip-btn active" data-theme="gold" onclick="window.gotApp.setPosterTheme('gold')">👑 Royal Gold</button>
+        <button class="theme-chip-btn" data-theme="fire" onclick="window.gotApp.setPosterTheme('fire')">🔥 Dragon Fire</button>
+        <button class="theme-chip-btn" data-theme="ice" onclick="window.gotApp.setPosterTheme('ice')">❄️ Winter Frost</button>
+        <button class="theme-chip-btn" data-theme="steel" onclick="window.gotApp.setPosterTheme('steel')">⚔️ Valyrian Steel</button>
+      </div>
+
+      <div class="poster-preview-wrap">
+        <canvas id="poster-canvas"></canvas>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+        <button class="btn-westeros btn-primary" onclick="window.gotApp.downloadPoster()">
+          <span>💾</span>
+          <span>Download Poster (PNG)</span>
+        </button>
+        <button class="btn-westeros btn-secondary" onclick="window.gotApp.closePosterModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MODULE SCRIPT -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
